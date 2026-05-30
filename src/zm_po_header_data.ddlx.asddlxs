@@ -1,0 +1,80 @@
+@Metadata.layer: #CUSTOMER 
+@UI:{ headerInfo: { 
+typeName: 'Purchase Order', 
+typeNamePlural: 'Purchase Orders', 
+title: { 
+type: #STANDARD, 
+value: 'PoNum' 
+} 
+} } 
+annotate entity ZC_PO_HEADER_DATA
+    with 
+{
+ @UI.facet: [
+{ 
+id: 'POHd', 
+purpose: #STANDARD, 
+position: 10, 
+type:#IDENTIFICATION_REFERENCE, 
+label: 'Purchase Order Header' 
+}, 
+
+{ 
+id: 'POItems', 
+purpose: #STANDARD, 
+type:#LINEITEM_REFERENCE, 
+position: 20, 
+targetElement: '_PO_items', 
+label: 'Items' 
+} 
+] 
+
+@UI.lineItem: [{ position: 10, label: 'Purchase Order'}] 
+@UI.selectionField: [{ position: 10 }] 
+@UI.identification: [{ position: 10, label: 'Purchase Order' }] 
+PoNum;
+@UI.lineItem: [{ position: 20,label: 'Document Category', importance: #HIGH }] 
+@UI.identification: [{ position: 20,label: 'Document Category' }] 
+DocCat;
+@UI.lineItem: [{ position: 30,label: 'Order Type', importance: #HIGH }] 
+@UI.identification: [{ position: 30,label: 'Order Type' }] 
+Type;
+@UI.lineItem: [{ position: 40,label: 'Company Code', importance: #HIGH }] 
+@UI.identification: [{ position: 40,label: 'Company Code' }] 
+CompCode;
+@UI.lineItem: [{ position: 50,label: 'Organization', importance: #HIGH }] 
+@UI.identification: [{ position: 50,label: 'Organization' }] 
+Org;
+@UI.lineItem: [{ position: 60,label: 'Status', importance: #HIGH }] 
+@UI.identification: [{ position: 60,label: 'Status' }]
+Status;
+@UI.lineItem: [{ position: 70, label: 'Supplier' }] 
+//@UI.selectionField: [{ position: 30 }] 
+@UI.identification: [{ position: 70, label: 'Supplier' }] 
+Vendor;
+@UI.lineItem: [{ position: 80, label: 'Plant' }] 
+//@UI.selectionField: [{ position: 70 }] 
+@UI.identification: [{ position: 80, label: 'Plant' }] 
+Plant;
+@UI.lineItem: [{ position: 90, label: 'Currency' }] 
+//@UI.selectionField: [{ position: 70 }] 
+@UI.identification: [{ position: 90, label: 'Currency' }]
+currency;
+@UI.lineItem: [{ position: 100, label: 'PO Value' }] 
+@UI.identification: [{ position: 100, label: 'PO Value' }]
+povalue;
+@UI.lineItem: [{ position: 110, label: 'Created By' }]
+@UI.identification: [{ position: 110, label: 'Created By' }] 
+CreateBy;
+@UI.lineItem: [{ position: 120, label: 'Created Date' }]
+@UI.identification: [{ position: 120, label: 'Created Date' }] 
+CreatedDateTime;
+@UI.lineItem: [{ position: 130, label: 'Changed Time' }]
+@UI.identification: [{ position: 130, label: 'Changed Time' }] 
+ChangedDateTime;
+@UI.lineItem: [{ position: 140, label: 'Last Changed By' }]
+@UI.identification: [{ position: 140, label: 'Last Changed By' }] 
+LocalLastChangedBy;
+//* Associations */
+//_PO_items;  
+}

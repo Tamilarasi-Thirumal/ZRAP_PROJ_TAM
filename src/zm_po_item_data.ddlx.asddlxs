@@ -1,0 +1,74 @@
+@Metadata.layer: #CORE 
+@UI.headerInfo:{ 
+title: 
+{ 
+label: 'PurchaseItemInfo', 
+type: #STANDARD, 
+value: 'PoItem'} 
+} 
+annotate entity ZC_PO_ITEM_DATA
+    with 
+{
+
+@UI.facet: [{ 
+id: 'ItemID', 
+purpose: #STANDARD, 
+position: 10, 
+type:#IDENTIFICATION_REFERENCE, 
+label: 'Item Information' 
+},
+
+{ 
+id: 'Supplier', 
+purpose: #STANDARD, 
+type:#LINEITEM_REFERENCE, 
+position: 20, 
+targetElement: '_Supplierdetails', 
+label: 'Supplier' 
+} 
+]
+
+@UI.lineItem: [{ position: 10,label: 'Purchase Order'}] 
+@UI.identification: [{ position: 10,label: 'Purchase Order' }] 
+PoNum;
+@UI.lineItem: [{ position: 20,label: 'Item No'}] 
+@UI.identification: [{ position: 20,label: 'Item No' }] 
+PoItem;
+@UI.lineItem: [{ position: 30,label: 'Item Description'}] 
+@UI.identification: [{ position: 30,label: 'Item Description' }] 
+ItemText;
+@UI.lineItem: [{ position: 40,label: 'Material'}] 
+@UI.identification: [{ position: 40,label: 'Material' }] 
+Material;
+@UI: { lineItem: [{ position: 50,label: 'Supplier'}], 
+       identification: [{ position: 50, label: 'Supplier' }] }
+Supplier;
+@UI.lineItem: [{ position: 60,label: 'Plant'}] 
+@UI.identification: [{ position: 60,label: 'Plant' }] 
+Plant;
+@UI.lineItem: [{ position: 70,label: 'Storage Location'}] 
+@UI.identification: [{ position: 70,label: 'Storage Location' }] 
+StorLoc;
+@UI.lineItem: [{ position: 80,label: 'Quantity'}] 
+@UI.identification: [{ position: 80,label: 'Quantity' }] 
+Qty;
+@UI.lineItem: [{ position: 90,label: 'UOM'}] 
+@UI.identification: [{ position: 90,label: 'UOM' }] 
+Uom;
+@UI.lineItem: [{ position: 100,label: 'Price'}] 
+@UI.identification: [{ position: 90,label: 'Price' }] 
+ProductPrice;
+@UI.lineItem: [{ position: 110,label: 'Currency'}] 
+@UI.identification: [{ position: 110,label: 'Currency' }] 
+Currency;
+@UI.lineItem: [{ position: 120,label: 'Total Price'}] 
+@UI.identification: [{ position: 120,label: 'Total Price'}] 
+TotalPrice;
+
+//LocalLastChangedBy;
+//LocalLastChangedAt;
+/* Associations */
+//_po_hd;
+//_Supplierdetails;
+    
+}

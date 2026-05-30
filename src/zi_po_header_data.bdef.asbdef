@@ -1,0 +1,87 @@
+unmanaged implementation in class zbp_i_po_header_data unique;
+strict ( 2 );
+with draft;
+
+define behavior for ZI_PO_HEADER_DATA alias POHeader
+draft table zdft_po_head query ZI_PO_HEADER_DFT
+late numbering
+lock master
+total etag ChangedDateTime
+etag master ChangedDateTime
+authorization master ( instance , global )
+{
+  create ( authorization : global );
+  update;
+  delete;
+  field ( readonly ) PoNum, Status,
+                     CreateBy, CreatedDateTime, ChangedDateTime;
+
+  association _PO_items { create; with draft;}
+
+  draft action Edit;
+  draft action Activate optimized;
+  draft action Discard;
+  draft action Resume;
+  draft determine action Prepare;
+
+
+  mapping for ztab_po_head
+  {
+     PoNum                = po_num;
+     DocCat               = doc_cat;
+     Type                 = type;
+     CompCode             = comp_code;
+     Org                  = org;
+     Status               = status;
+     Vendor               = vendor;
+     Plant                = plant;
+     Currency             = currency;
+     POValue              = po_tot_value;
+     CreateBy             = create_by;
+     CreatedDateTime      = created_date_time;
+     ChangedDateTime      = changed_date_time;
+     LocalLastChangedBy   = local_last_changed_by;
+   }
+}
+
+define behavior for ZI_PO_ITEM_DATA alias POItem
+draft table zdft_po_item query ZI_PO_ITEM_DFT
+etag master LocalLastChangedAt
+late numbering
+lock dependent by _po_hd
+authorization dependent by _po_hd
+
+{
+  create;
+  update;
+  delete;
+  field ( readonly ) PoNum, PoItem,LocalLastChangedBy,
+                     LocalLastChangedAt;
+
+  determination Item_Total_Price on modify {field Qty; field ProductPrice; }
+  determination Header_Total_Value on modify {field Qty; field ProductPrice; }
+
+  side effects { field Qty affects field TotalPrice;
+                 field ProductPrice affects field TotalPrice;
+                 field TotalPrice affects entity _po_hd, $self, messages ;
+               }
+
+  association _po_hd { with draft; }
+  mapping for ztab_po_item
+  {
+    PoNum                = po_num;
+    PoItem               = po_item;
+    ItemText             = item_text;
+    Material             = material;
+    Supplier             = supplier;
+    Plant                = plant;
+    StorLoc              = stor_loc;
+    Qty                  = qty;
+    Uom                  = uom;
+    ProductPrice         = product_price;
+    Currency             = currency;
+    TotalPrice           = total_price;
+    LocalLastChangedBy   = local_last_changed_by;
+    LocalLastChangedAt   = local_last_changed_at;
+  }
+}

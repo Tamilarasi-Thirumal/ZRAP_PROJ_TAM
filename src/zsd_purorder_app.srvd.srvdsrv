@@ -1,0 +1,5 @@
+@EndUserText.label: 'Service Definition for PurOrder app'
+define service ZSD_PURORDER_APP {
+  expose ZC_PO_HEADER_DATA as PO_HD;
+  expose ZC_PO_ITEM_DATA   as PO_Items;
+}
