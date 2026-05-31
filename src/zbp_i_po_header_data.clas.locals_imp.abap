@@ -329,13 +329,12 @@ CLASS lhc_POHeader IMPLEMENTATION.
 
     LOOP AT entities_cba ASSIGNING FIELD-SYMBOL(<lfs_po_items_cba>).
 
-      DATA(lv_po) = <lfs_po_items_cba>-PoNum.
-
       LOOP AT <lfs_po_items_cba>-%target ASSIGNING FIELD-SYMBOL(<lfs_items_target>).
         ls_po_items = CORRESPONDING #( <lfs_items_target> ).
         IF ls_po_items IS NOT INITIAL.
           TRY.
               ls_po_items-%cid = <lfs_po_items_cba>-%cid_ref.
+              ls_po_items-PoNum = <lfs_po_items_cba>-PoNum.
               lo_buffer->add_to_item_buffer( iv_flag = 'C' is_po_item = ls_po_items ).
 
               APPEND VALUE #( %cid   = <lfs_po_items_cba>-%cid_ref
@@ -458,6 +457,16 @@ CLASS lsc_POHeader IMPLEMENTATION.
 
    ENDIF.
 
+   SELECT * FROM ztab_po_item
+        FOR ALL ENTRIES IN @lo_buffer->mt_item_buffer
+        WHERE po_num = @lo_buffer->mt_item_buffer-lv_item_data-PoNum
+        INTO TABLE @DATA(lt_po_item_db).
+   IF sy-subrc EQ 0.
+       SORT lt_po_item_db BY po_num po_item DESCENDING.
+       READ TABLE lt_po_item_db INTO DATA(ls_po_item_db) INDEX 1.
+       lv_max_item_id = ls_po_item_db-po_item.
+   ENDIF.
+
    LOOP AT lo_buffer->mt_header_buffer ASSIGNING FIELD-SYMBOL(<ls_header_buffer>).
     IF <ls_header_buffer>-lv_header_data-PoNum IS INITIAL.
         lv_max_header_id += 1.
@@ -479,8 +488,13 @@ CLASS lsc_POHeader IMPLEMENTATION.
 
         APPEND VALUE #(  poitem = <ls_item_buffer>-lv_item_data-PoItem
                       ponum = <ls_item_buffer>-lv_item_data-PoNum ) to mapped-poitem.
-     ELSEIF <ls_item_buffer>-lv_item_data-PoNum IS NOT INITIAL.
 
+     ELSEIF <ls_item_buffer>-lv_item_data-PoNum IS NOT INITIAL.
+        lv_max_item_id += 1.
+        <ls_item_buffer>-lv_item_data-PoItem = lv_max_item_id.
+
+        APPEND VALUE #(  poitem = <ls_item_buffer>-lv_item_data-PoItem
+                      ponum = <ls_item_buffer>-lv_item_data-PoNum ) to mapped-poitem.
      ENDIF.
 
     ENDLOOP.

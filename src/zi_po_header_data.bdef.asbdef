@@ -13,8 +13,7 @@ authorization master ( instance , global )
   create ( authorization : global );
   update;
   delete;
-  field ( readonly ) PoNum, Status,
-                     CreateBy, CreatedDateTime, ChangedDateTime;
+  field ( readonly ) PoNum, CreateBy, CreatedDateTime, ChangedDateTime;
 
   association _PO_items { create; with draft;}
 
